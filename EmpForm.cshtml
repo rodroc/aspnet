@@ -1,0 +1,463 @@
+﻿@{
+    Layout = null;
+    ViewBag.nocache = DateTime.Now;
+}
+<style type="text/css">
+    .reqfield {
+        color:firebrick;
+    }
+</style>
+
+        <div class="ng-class: {'errorsSummaryBox': !empForm.$valid || invalidPIN || invalidEmpNum || invalidTaxID || gotDuplicateEmails || email1Exists || email2Exists || !allComplexJobTitles.length,
+                'validSummaryBox': empForm.$valid && !invalidPIN && !invalidEmpNum && !invalidTaxID && !gotDuplicateEmails && !email1Exists && !email2Exists && allComplexJobTitles.length
+                , 'row':true}">
+            <h3 >
+                Notice:
+            </h3>
+            <div data-ng-show="!empForm.$valid  || invalidPIN || invalidEmpNum || invalidTaxID || gotDuplicateEmails || email1Exists || email2Exists || !allComplexJobTitles.length">Required fields are marked in red.   Please complete before updating.</div>
+            <div data-ng-show="empForm.$valid && !invalidPIN && !invalidEmpNum && !invalidTaxID && !gotDuplicateEmails && !email1Exists && !email2Exists && allComplexJobTitles.length">
+                <div data-ng-switch="mode">
+                    <div data-ng-switch-when="add">Ready to create</div>
+                    <div data-ng-switch-when="edit">Ready to update</div>
+                    <div data-ng-switch-default>invalid mode</div>
+                </div>
+            </div>
+        </div>
+
+                <div data-ng-switch="mode">
+                    <div data-ng-switch-when="add">
+                        <h2>Add New<i class="icon-user on-right"></i></h2>
+                    </div>
+                    <div data-ng-switch-when="edit">
+                        <i class="icon-pencil on-left"></i><i>edit</i>&nbsp;&nbsp;<span style="font-size: x-large;">{{emp.FirstName}}&nbsp;{{emp.LastName}}</span>
+                    </div>
+                    <div data-ng-switch-default>invalid mode</div>
+                </div>
+
+<style type="text/css">
+    form[name=empForm] table tr td:nth-child(0){
+        width:80%;
+    }
+    form[name=empForm] table tr td:nth-child(1){
+        width:20%;
+    }
+</style>
+
+        <form id="empForm" name="empForm" data-ng-init="initForm()"  >
+            <table style="width:100%;" border="0">
+
+                <tr>
+                    <td>
+                        Employee #<span style="color:red;">*</span>
+                    </td>
+                    <td>
+                        <div class="input-control text"  data-role="input-control" >
+                        <input type="text" name="EmployeeNumber" class="numFld" placeholder="type number"
+                            data-ng-model="emp.EmployeeNumber" 
+                            maxlength="30" required tabindex="0" autofocus
+
+                            data-ng-change='onChangeEmpNum2(emp.EmployeeNumber)' 
+                            data-ng-blur='onBlurEmpNum2(emp.EmployeeNumber)' 
+
+                            
+                               />
+                            <button class="btn-clear" tabindex="-1" data-ng-click="emp.EmployeeNumber=null" type="button"/>
+
+                        <span name="EmployeeNumber" class="reqField" style="color:firebrick;display:none;" >required</span>
+                        <span id="empNumStatus" style="color:firebrick;display:none;" >Number already in use</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>    
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+
+                <tr>    
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+        
+                <tr>
+                    <td>
+                        First&nbsp;Name<span style="color:red;">*</span>
+                    </td>
+                    <td>
+                        <div class="input-control text" >
+                        <input type="text" name="FirstName" class="nameFld" data-ng-model="emp.FirstName" 
+                            maxlength="30" required tabindex="0"
+                            data-ng-change='onChangeReqField2("FirstName")' 
+                            data-ng-blur='onBlurReqField2("FirstName")'                            
+                             />
+                        <button class="btn-clear" tabindex="-1" data-ng-click="emp.FirstName=null" type="button"/>
+                        <span name="FirstName" class="reqField" style="color:firebrick;display:none;" >required</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Middle Name
+                    </td>
+                    <td>
+                        <div class="input-control text" >
+                            <input type="text" name="MiddleName" class="nameFld" data-ng-model="emp.MiddleName" 
+                                maxlength="30"  tabindex="0" />
+                            <button class="btn-clear" tabindex="-1" data-ng-click="emp.MiddleName=null" type="button"/>
+                        </div>
+                    </td>
+                </tr>   
+                
+                <tr>
+                    <td>
+                Last&nbsp;Name
+                <span style="color:red;">*</span>
+                    </td>
+                    <td>
+            <div class="input-control text" >
+                <input type="text" name="LastName" data-ng-model="emp.LastName" class="nameFld"
+                    maxlength="30" required tabindex="0" 
+                            data-ng-change='onChangeReqField2("LastName")' 
+                            data-ng-blur='onBlurReqField2("LastName")'                            
+                    />
+                <button class="btn-clear" tabindex="-1" data-ng-click="emp.LastName=null" type="button"/>
+                <span name="LastName" class="reqField" style="color:firebrick;display:none;" >required</span>
+            </div>
+                    </td>
+                </tr> 
+
+                <tr>    
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+               
+        <tr>
+            <td>
+                PIN
+                <span style="color:red;">*</span>
+            </td>
+            <td>
+            <div class="input-control text" >
+                <input type="text" name="PIN" data-ng-model="emp.PIN" class="numFld" placeholder="type number"
+                    maxlength="30" required tabindex="0"
+                    data-ng-change='onChangePIN2(emp.PIN)' 
+                    data-ng-blur='onBlurPIN2(emp.PIN)' 
+                    />
+                <button class="btn-clear" tabindex="-1" data-ng-click="emp.PIN=null" type="button"/>
+                <span name="PIN" class="reqField" style="color:firebrick;display:none;" >required</span>
+                <span id="PINStatus" style="color:firebrick;display:none;" >PIN already in use</span>
+            </div>
+            </td>
+        </tr>
+
+              
+
+              
+        <tr>
+            <td>
+                Start Date
+                <span style="color:red;">*</span>
+            </td>
+            <td>
+               
+            <div class="input-control text" >
+                <input type="text" id="StartDate" name="StartDate" data-ng-model="emp.StartDate" placeholder="click to select date" datepicker readonly required minDate="-70Y" yearRange="-70:+0" maxDate="0D" defaultDate="0D"  />
+            </div>
+            </td>
+        </tr>
+
+                <tr>
+                    <td>
+                        Gender
+                    </td>
+                    <td>
+            <div class="input-control radio" style="width:100% auto;" >
+                <div style="float:left;"><label><input type="radio" data-ng-model="emp.Gender" value="M">Male <span class="check"></span></label></div>
+                <div style="float:right;"><label><input type="radio" data-ng-model="emp.Gender" value="F">Female <span class="check"></span></label></div>
+            </div>
+            <div style="clear:both;"></div>
+
+                    </td>
+                </tr>  
+
+                
+        <tr>
+            <td>
+                Job Title
+                <span style="color:red;">*</span>
+            </td>
+
+            <td><div class="input-control select" >
+                    <select name="jobtitle" id="jobtitle"  tabindex="0" required  >
+                        <option 
+                            data-ng-repeat="jtitle in allComplexJobTitles" 
+                            value="{{jtitle.JobTitleID}}"
+                            data-ng-selected="{{jtitle.JobTitleID == emp.EmployeeJobTitle.JobTitleID}}"
+                            >
+                            {{jtitle.Title}}
+                        </option>
+                     </select>
+                    <span data-ng-show="!allComplexJobTitles.length" name="JobTitle" style="color:firebrick;" >required</span>
+                </div>
+              
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Hourly Rate
+                <span style="color:red;">*</span>
+            </td>
+
+            <td>
+                <div class="input-control text" >
+                <input type="text" name="HourlyRate" data-ng-model="emp.EmployeeJobTitle.HourlyRate" class="floatFld" placeholder="type number"
+                    maxlength="30" required tabindex="0"
+                            
+                    data-ng-change='onChangeReqField2("HourlyRate")' 
+                    data-ng-blur='onBlurReqField2("HourlyRate")'                            
+
+                    />
+                <button class="btn-clear" tabindex="-1" data-ng-click="emp.EmployeeJobTitle.HourlyRate=0" type="button"/>
+                <span name="HourlyRate" class="reqField" style="color:firebrick;display:none;" >required</span>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Tax&nbsp;ID
+            </td>
+
+            <td>
+                <div class="input-control text" >
+                    <input type="text" name="TaxID" data-ng-model="emp.TaxID" placeholder="type number" tabindex="0" 
+                        maxlength="50"                        
+                        data-ng-change='onChangeTaxID(emp.TaxID)' 
+                        data-ng-blur='onBlurTaxID(emp.TaxID)' 
+                        />
+                    <button class="btn-clear" tabindex="-1" data-ng-click="emp.TaxID=null" type="button"/>
+                    <span id="TaxIDStatus" style="color:firebrick;display:none;" >already in use</span>
+                </div>
+            </td>
+        </tr>
+                <tr>
+                    <td>
+                        Email (Primary)
+                        <span style="color:red;">*</span>
+                    </td>
+                    <td>
+            <div class="input-control text" >
+             <input type="email" name="Email1" data-ng-model="emp.Email1" tabindex="0" required
+                    data-ng-blur='checkEmail("Email1");'                            
+                    data-ng-change='onChangeEmailField("Email1")'
+                  />
+                <button class="btn-clear" tabindex="-1" data-ng-click="emp.Email1=null" type="button"/>
+                <span style="color:firebrick;display:none;" >invalid email format</span>
+                <span style="color:firebrick;display:none;margin-left:0px;" name="Email1" class="emailExists" >already in use</span>
+                <span name="Email1" class="reqField" style="color:firebrick;display:none;" >required</span>
+            </div>
+                    </td>
+                </tr>                        
+
+                <tr>
+                    <td>
+                        Email (Secondary)
+                    </td>
+                    <td>
+                    <div class="input-control text" >
+                    <input type="email" name="Email2" data-ng-model="emp.Email2" tabindex="0" 
+                        data-ng-blur='checkEmail("Email2")'                            
+                        data-ng-change='onChangeEmailField("Email2")'
+                        />
+                        <button class="btn-clear" tabindex="-1" data-ng-click="emp.Email2=null" type="button"/>
+\\
+                    <span style="color:firebrick;display:none;" >invalid email format</span>
+                    <span id="dupEmailMsg" style="color:firebrick;display:none;" >duplicate email</span>
+                    <span data-ng-show="gotDuplicateEmails && (email1Exists || email2Exists)" style="color:gray;">|</span>
+                    <span style="color:firebrick;display:none;margin-left:0px;" name="Email2" class="emailExists" >already in use</span>
+                    </div>
+                    </td>
+                </tr>
+
+        <tr>
+            <td>
+                Date Of Birth
+            </td>
+            <td>
+            <div class="input-control text" >
+                <input type="text" id="DateOfBirth" name="DateOfBirth" data-ng-model="emp.DateOfBirth" placeholder="click to select date" datepicker readonly minDate="-56Y" yearRange="-56:+0" maxDate="-14Y" defaultDate="-20Y"   />
+
+            </div>
+            </td>
+        </tr>       
+
+                <tr>
+                    <td>
+                        Address&nbsp;1
+                    </td>
+                    <td>
+            <div class="input-control textarea" >
+            <textarea name="Address1" data-ng-model="emp.Address1" tabindex="0"></textarea>  
+            </div>       
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Address&nbsp;2
+                    </td>
+                    <td>
+            <div class="input-control textarea" >
+            <textarea name="Address2" data-ng-model="emp.Address2" tabindex="0"></textarea>
+            </div>         
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        City
+                    </td>
+                    <td>
+            <div class="input-control text" >
+            <input name="City" data-ng-model="emp.City" tabindex="0" class="nameFld" />  
+                <button class="btn-clear" tabindex="-1" data-ng-click="emp.City=null" type="button"/>
+            </div>       
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        State
+                    </td>
+                    <td>
+                        <div class="input-control select" >
+            <select name="state" data-ng-model="emp.StateProvCode" tabindex="0"  >
+                        <option value="">--- Please Choose ---</option>
+                        <option value="AL">Alabama</option>
+                        <option value="AK">Alaska</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="AR">Arkansas</option>
+                        <option value="CA">California</option>
+                        <option value="CO">Colorado</option>
+                        <option value="CT">Connecticut</option>
+                        <option value="DE">Delaware</option>
+                        <option value="DC">District of Columbia</option>
+                        <option value="FL">Florida</option>
+                        <option value="GA">Georgia</option>
+                        <option value="HI">Hawaii</option>
+                        <option value="ID">Idaho</option>
+                        <option value="IL">Illinois</option>
+                        <option value="IN">Indiana</option>
+                        <option value="IA">Iowa</option>
+                        <option value="KS">Kansas</option>
+                        <option value="KY">Kentucky</option>
+                        <option value="LA">Louisiana</option>
+                        <option value="ME">Maine</option>
+                        <option value="MD">Maryland</option>
+                        <option value="MA">Massachusetts</option>
+                        <option value="MI">Michigan</option>
+                        <option value="MN">Minnesota</option>
+                        <option value="MS">Mississippi</option>
+                        <option value="MO">Missouri</option>
+                        <option value="MT">Montana</option>
+                        <option value="NE">Nebraska</option>
+                        <option value="NV">Nevada</option>
+                        <option value="NH">New Hampshire</option>
+                        <option value="NJ">New Jersey</option>
+                        <option value="NM">New Mexico</option>
+                        <option value="NY">New York</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="ND">North Dakota</option>
+                        <option value="OH">Ohio</option>
+                        <option value="OK">Oklahoma</option>
+                        <option value="OR">Oregon</option>
+                        <option value="PA">Pennsylvania</option>
+                        <option value="RI">Rhode Island</option>
+                        <option value="SC">South Carolina</option>
+                        <option value="SD">South Dakota</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="TX">Texas</option>
+                        <option value="UT">Utah</option>
+                        <option value="VT">Vermont</option>
+                        <option value="VA">Virginia</option>
+                        <option value="WA">Washington</option>
+                        <option value="WV">West Virginia</option>
+                        <option value="WI">Wisconsin</option>
+                        <option value="WY">Wyoming</option>
+                    </select>  
+               </div>       
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Postal Code
+                    </td>
+                    <td>
+                    <div class="input-control text" >
+                    <input type="text" name="PostalCode" class="numFld" maxlength="8" data-ng-model="emp.PostalCode" placeholder="type number" tabindex="0" />
+                    <button class="btn-clear" tabindex="-1" data-ng-click="emp.PostalCode=null" type="button"/>
+                    </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Home Phone
+                    </td>
+                    <td>
+                    <div class="input-control text" >
+                        <input type="text" name="HomePhone" class="phoneFld" data-ng-model="emp.HomePhone" placeholder="type number" tabindex="0" />
+                        <button class="btn-clear" tabindex="-1" data-ng-click="emp.HomePhone=null" type="button"/>
+                    </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Cell Phone
+                    </td>
+                    <td>
+                        <div class="input-control text" >
+                        <input type="text" name="CellPhone" class="phoneFld" placeholder="type number"
+                            data-ng-model="emp.CellPhone"
+                            maxlength="20"
+                             tabindex="0" />
+                        <button class="btn-clear" tabindex="-1" data-ng-click="emp.CellPhone=null" type="button"/>
+                        </div>
+                    </td>
+                </tr>
+
+        </table>
+    
+            </form>
+
+                
+
+
+@*<div><pre>{{emp}}</pre></div>*@
+
+
+<div class="toolbar">
+    <button data-ng-click="saveEmployee()" 
+        data-ng-disabled="!empForm.$valid || invalidPIN || invalidEmpNum || invalidTaxID || gotDuplicateEmails || email1Exists || email2Exists || !allComplexJobTitles.length" ><i class="icon-floppy"></i>&nbsp;<span>{{btnSaveTxt}}</span>
+    </button>
+
+    <div data-ng-switch="mode">
+        <div data-ng-switch-when="edit">
+            <button class="default fg-white" style="float:right;" data-ng-disabled="!validEmail(emp.UserName)"  data-ng-click="request_password(emp)"><i class="icon-key on-left"></i><span style="font-size:x-small;">Reset Password</span></button>
+        </div>
+        <div data-ng-switch-default></div>
+    </div>
+    
+    </div>
+
+		 <div class="spinner" data-ng-show="savingEmployee">
+          <div class="bounce1"></div>
+          <div class="bounce2"></div>
+          <div class="bounce3"></div>
+          <div class="bounce4"></div>
+        </div>
