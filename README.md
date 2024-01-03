@@ -1,2 +1,2 @@
 # aspnet
-Sample ASP.NET scripts for employee module
+Sample ASP.NET & AngularJS for employee module.
